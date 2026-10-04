@@ -19,7 +19,12 @@ Avance de análisis y diseño basado en el documento del equipo fechado el 1 de 
 - [Seguimiento de la entrega](PENDIENTES.md).
 
 ## Prototipo
-El documento identifica Figma como herramienta del prototipo actual de ambos roles. [Archivo de diseño indicado en el avance](https://www.figma.com/design/V1pfsM94xh7CFtefzMbpg7/Prototipo-Final-Presta-U?node-id=0-1). Los permisos y la navegación del enlace deben comprobarse antes de entregar. Los diagramas de navegación y datos están incorporados en el PDF.
+- [Prototipo navegable en Figma](https://www.figma.com/proto/V1pfsM94xh7CFtefzMbpg7/Prototipo-Final-Presta-U?node-id=2-3&p=f&t=oCkg5Wy5G1WKbrLY-0&scaling=min-zoom&content-scaling=fixed&page-id=0%3A1&starting-point-node-id=2%3A3).
+- [Archivo de diseño en Figma](https://www.figma.com/design/V1pfsM94xh7CFtefzMbpg7/Prototipo-Final-Presta-U?node-id=0-1).
+- [Exportación PDF de las 22 pantallas](Prototipo_Final_Presta_U.pdf): copia suministrada por el equipo el 4 de octubre de 2026, consultable sin acceso a Figma.
+- [Guía de pantallas y revisión](PROTOTIPO.md): correspondencia con historias y aspectos por comprobar.
+
+El diseño incluye pantallas del solicitante y del encargado. El PDF es una evidencia visual estática; la navegación interactiva se consulta en Figma y queda pendiente de verificación. Los mapas de navegación y datos están en el documento del avance.
 
 ## Roles y alcance
 - **Solicitante:** estudiantes y docentes; registro, acceso, catálogo, búsqueda, solicitudes, seguimiento, cancelación de pendientes, historial y perfil.
