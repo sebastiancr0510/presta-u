@@ -2,7 +2,6 @@
 Sistema web para la gestión de préstamos de equipos universitarios.
 
 
-## Información académica
 - Universidad Fidélitas — Desarrollo de Aplicaciones Web y Patrones (SC-403).
 - Profesor: Allam Mauricio Fernández Rivera.
 - Equipo: Sebastián Campos Rojas y Fiorella Maria Piña Solano.
@@ -10,10 +9,6 @@ Sistema web para la gestión de préstamos de equipos universitarios.
 
 ## Problema y objetivo
 Una unidad universitaria que gestiona préstamos mediante mensajes, papel o archivos separados puede tener solicitudes duplicadas, dificultades para consultar disponibilidad y falta de seguimiento de entregas y devoluciones. Presta U centralizará ese proceso para un cliente potencial: una biblioteca, laboratorio o unidad de apoyo académico. La necesidad deberá validarse con la unidad que adopte la solución.
-
-
-## Estado del proyecto
-Avance de análisis y diseño basado en el documento del equipo fechado el 1 de octubre de 2026. Incluye 20 historias con criterios de aceptación y prioridades, prototipo, navegación y modelo preliminar. Aún no hay aplicación ejecutable ni pruebas de implementación.
 
 
 ## Documentación
@@ -54,12 +49,3 @@ Ocho entidades: Rol, Usuario, Categoría, Equipo, Mantenimiento, Solicitud, Pré
 
 El flujo de ramas y revisión se define en [CONTRIBUTING.md](CONTRIBUTING.md).
 
-## Pendientes de la entrega
-
-- Agregar a Fiorella como colaboradora cuando se confirme su usuario y acepte la invitación.
-- Revisar las observaciones de [PROTOTIPO.md](PROTOTIPO.md) y comprobar permisos y navegación en Figma.
-- Dar acceso al profesor al repositorio privado o acordar su publicación.
-- Grabar el video con ambos integrantes y añadir el enlace.
-- Revisar el avance en equipo y validar el problema con el cliente potencial.
-
-La siguiente etapa es implementar las historias prioritarias y documentar instalación y pruebas.
