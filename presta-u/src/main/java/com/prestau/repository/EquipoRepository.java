@@ -9,6 +9,8 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface EquipoRepository extends JpaRepository<Equipo, Integer> {
+    boolean existsByCategoriaIdCategoriaAndActivoTrue(Integer categoria);
+    long countByCategoriaIdCategoria(Integer categoria);
     boolean existsByCodigo(String codigo);
 
     List<Equipo> findByActivoTrueOrderByNombreAsc();
