@@ -1,8 +1,6 @@
 package com.prestau.controller;
 
 import com.prestau.service.CategoriaService;
-import com.prestau.repository.EquipoRepository;
-import lombok.RequiredArgsConstructor;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -10,20 +8,17 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 @Controller
-@RequiredArgsConstructor
 @RequestMapping("/categorias")
 public class CategoriaController {
     private final CategoriaService categorias;
-    private final EquipoRepository equipos;
+
+    public CategoriaController(CategoriaService categorias) {
+        this.categorias = categorias;
+    }
 
     @GetMapping
     public String listado(Model model) {
-        var lista = categorias.getTodas();
-        var cantidades = new java.util.HashMap<Integer, Long>();
-        for (var categoria : lista) cantidades.put(categoria.getIdCategoria(),
-                equipos.countByCategoriaIdCategoria(categoria.getIdCategoria()));
-        model.addAttribute("categorias", lista);
-        model.addAttribute("cantidades", cantidades);
+        model.addAttribute("categorias", categorias.getTodas());
         return "categorias/listado";
     }
 

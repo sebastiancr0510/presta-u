@@ -31,19 +31,29 @@ public class CategoriaService {
         boolean repetido = id == null ? categoriaRepository.existsByNombreIgnoreCase(limpio)
                 : categoriaRepository.existsByNombreIgnoreCaseAndIdCategoriaNot(limpio, id);
         if (repetido) throw new IllegalArgumentException("Ya existe una categoría con ese nombre.");
-        Categoria categoria = id == null ? new Categoria() : categoriaRepository.findById(id)
-                .orElseThrow(() -> new IllegalArgumentException("La categoría no existe."));
+        Categoria categoria = new Categoria();
+        if (id != null) {
+            var categoriaOpt = categoriaRepository.findById(id);
+            if (categoriaOpt.isEmpty()) {
+                throw new IllegalArgumentException("La categoría no existe.");
+            }
+            categoria = categoriaOpt.get();
+        }
         categoria.setNombre(limpio);
         if (id == null) categoria.setActiva(true);
-        categoriaRepository.saveAndFlush(categoria);
+        categoriaRepository.save(categoria);
     }
 
     @Transactional
     public void inactivar(Integer id) {
-        Categoria categoria = categoriaRepository.findById(id)
-                .orElseThrow(() -> new IllegalArgumentException("La categoría no existe."));
+        var categoriaOpt = categoriaRepository.findById(id);
+        if (categoriaOpt.isEmpty()) {
+            throw new IllegalArgumentException("La categoría no existe.");
+        }
+        Categoria categoria = categoriaOpt.get();
         if (equipos.existsByCategoriaIdCategoriaAndActivoTrue(id))
             throw new IllegalArgumentException("No se puede inactivar una categoría con equipos activos.");
         categoria.setActiva(false);
+        categoriaRepository.save(categoria);
     }
 }

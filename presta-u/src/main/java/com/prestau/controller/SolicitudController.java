@@ -1,16 +1,18 @@
 package com.prestau.controller;
 
 import com.prestau.service.SolicitudService;
-import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 @Controller
-@RequiredArgsConstructor
 @RequestMapping("/solicitudes")
 public class SolicitudController {
     private final SolicitudService solicitudes;
+
+    public SolicitudController(SolicitudService solicitudes) {
+        this.solicitudes = solicitudes;
+    }
 
     @GetMapping
     public String listado(Model model) {
@@ -19,9 +21,15 @@ public class SolicitudController {
     }
 
     @GetMapping("/{id}")
-    public String detalle(@PathVariable Integer id, Model model) {
-        model.addAttribute("solicitud", solicitudes.getPropia(id));
-        return "solicitudes/detalle";
+    public String detalle(@PathVariable Integer id, Model model,
+            org.springframework.web.servlet.mvc.support.RedirectAttributes flash) {
+        try {
+            model.addAttribute("solicitud", solicitudes.getPropia(id));
+            return "solicitudes/detalle";
+        } catch (IllegalArgumentException e) {
+            flash.addFlashAttribute("error", e.getMessage());
+            return "redirect:/solicitudes";
+        }
     }
 
     @PostMapping("/{id}/cancelar")
@@ -32,6 +40,7 @@ public class SolicitudController {
             flash.addFlashAttribute("mensaje", "Solicitud cancelada.");
         } catch (IllegalArgumentException e) {
             flash.addFlashAttribute("error", e.getMessage());
+            return "redirect:/solicitudes";
         }
         return "redirect:/solicitudes/" + id;
     }
