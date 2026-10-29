@@ -1,6 +1,6 @@
 # Backlog inicial
 
-Resumen fiel a la tabla de prioridades del PDF del equipo. Los criterios de aceptación CA-1 a CA-3 de cada historia se consultan en [Avance 1 SC-403](Avance_1_SC-403.pdf). Todas están pendientes de implementación; la numeración no define el orden de desarrollo.
+Resumen fiel a la tabla de prioridades del PDF del equipo. Los criterios de aceptación CA-1 a CA-3 de cada historia se consultan en [Avance 1 SC-403](Avance_1_SC-403.pdf). El estado de implementación de cada historia se mantiene en el README; la numeración no define el orden de desarrollo.
 
 | Historia | Rol | Función | Prioridad |
 |---|---|---|---|
