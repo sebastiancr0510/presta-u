@@ -7,11 +7,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 @Controller
 public class PendienteController {
 
-    @GetMapping("/prestamos")
-    public String prestamos(Model model) {
-        return pendiente(model, "menu.prestamos");
-    }
-
     @GetMapping("/perfil")
     public String perfil(Model model) {
         return pendiente(model, "menu.perfil");
