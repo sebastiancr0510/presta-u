@@ -60,4 +60,13 @@ public class SolicitudService {
                 .orElseThrow(() -> new org.springframework.web.server.ResponseStatusException(
                         org.springframework.http.HttpStatus.NOT_FOUND, "La solicitud no existe."));
     }
+
+    @Transactional
+    public void cancelar(Integer id) {
+        getPropia(id);
+        int cambiadas = solicitudes.cambiarEstadoPropio(id, usuarioActual.getActual().getIdUsuario(),
+                EstadoSolicitud.PENDIENTE, EstadoSolicitud.CANCELADA);
+        if (cambiadas != 1)
+            throw new IllegalArgumentException("Solo se puede cancelar una solicitud pendiente.");
+    }
 }

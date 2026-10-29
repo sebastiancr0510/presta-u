@@ -23,4 +23,16 @@ public class SolicitudController {
         model.addAttribute("solicitud", solicitudes.getPropia(id));
         return "solicitudes/detalle";
     }
+
+    @PostMapping("/{id}/cancelar")
+    public String cancelar(@PathVariable Integer id,
+            org.springframework.web.servlet.mvc.support.RedirectAttributes flash) {
+        try {
+            solicitudes.cancelar(id);
+            flash.addFlashAttribute("mensaje", "Solicitud cancelada.");
+        } catch (IllegalArgumentException e) {
+            flash.addFlashAttribute("error", e.getMessage());
+        }
+        return "redirect:/solicitudes/" + id;
+    }
 }
