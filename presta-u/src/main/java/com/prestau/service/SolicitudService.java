@@ -48,4 +48,16 @@ public class SolicitudService {
         solicitud.setCreada(ahora);
         return solicitudes.save(solicitud);
     }
+
+    @Transactional(readOnly = true)
+    public java.util.List<Solicitud> getPropias() {
+        return solicitudes.findByUsuarioIdUsuarioOrderByCreadaDesc(usuarioActual.getActual().getIdUsuario());
+    }
+
+    @Transactional(readOnly = true)
+    public Solicitud getPropia(Integer id) {
+        return solicitudes.findByIdSolicitudAndUsuarioIdUsuario(id, usuarioActual.getActual().getIdUsuario())
+                .orElseThrow(() -> new org.springframework.web.server.ResponseStatusException(
+                        org.springframework.http.HttpStatus.NOT_FOUND, "La solicitud no existe."));
+    }
 }
