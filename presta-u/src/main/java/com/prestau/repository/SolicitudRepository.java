@@ -19,8 +19,4 @@ public interface SolicitudRepository extends JpaRepository<Solicitud, Integer> {
     boolean existsByUsuarioIdUsuarioAndEquipoIdEquipoAndInicioAndFinAndEstado(
             Integer usuario, Integer equipo, LocalDateTime inicio, LocalDateTime fin, EstadoSolicitud estado);
 
-    @Modifying(clearAutomatically = true, flushAutomatically = true)
-    @Query("UPDATE Solicitud s SET s.estado = :nuevo WHERE s.idSolicitud = :id AND s.usuario.idUsuario = :usuario AND s.estado = :anterior")
-    int cambiarEstadoPropio(@Param("id") Integer id, @Param("usuario") Integer usuario,
-            @Param("anterior") EstadoSolicitud anterior, @Param("nuevo") EstadoSolicitud nuevo);
 }

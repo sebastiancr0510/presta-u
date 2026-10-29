@@ -13,7 +13,7 @@ public class Prestamo {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id_prestamo")
     private Integer idPrestamo;
-    @OneToOne(optional = false)
+    @ManyToOne(optional = false)
     @JoinColumn(name = "id_solicitud", unique = true)
     private Solicitud solicitud;
     @Column(nullable = false)

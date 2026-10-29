@@ -3,7 +3,6 @@ package com.prestau.controller;
 import com.prestau.domain.SolicitudFormulario;
 import com.prestau.service.*;
 import jakarta.validation.Valid;
-import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -11,10 +10,12 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 @Controller
-@RequiredArgsConstructor
 public class NuevaSolicitudController {
     private final SolicitudService solicitudes;
-    private final EquipoService equipos;
+
+    public NuevaSolicitudController(SolicitudService solicitudes) {
+        this.solicitudes = solicitudes;
+    }
 
     @GetMapping("/solicitudes/nueva")
     public String nueva(@RequestParam(required = false) Integer equipoId, Model model) {
@@ -42,7 +43,6 @@ public class NuevaSolicitudController {
     }
 
     private void cargarEquipos(Model model) {
-        model.addAttribute("equipos", equipos.getActivos().stream()
-                .filter(e -> EquipoService.EN_SERVICIO.equals(e.getEstadoOperativo())).toList());
+        model.addAttribute("equipos", solicitudes.getEquiposSolicitables());
     }
 }

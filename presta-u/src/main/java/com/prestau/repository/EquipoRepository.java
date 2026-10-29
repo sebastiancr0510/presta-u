@@ -9,12 +9,8 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface EquipoRepository extends JpaRepository<Equipo, Integer> {
-    @org.springframework.data.jpa.repository.Lock(jakarta.persistence.LockModeType.PESSIMISTIC_WRITE)
-    @Query("SELECT e FROM Equipo e WHERE e.idEquipo = :id")
-    java.util.Optional<Equipo> buscarParaSolicitud(@Param("id") Integer id);
-
     boolean existsByCategoriaIdCategoriaAndActivoTrue(Integer categoria);
-    long countByCategoriaIdCategoria(Integer categoria);
+    List<Equipo> findByActivoTrueAndEstadoOperativoOrderByNombreAsc(String estadoOperativo);
     boolean existsByCodigo(String codigo);
 
     List<Equipo> findByActivoTrueOrderByNombreAsc();

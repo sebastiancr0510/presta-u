@@ -28,7 +28,7 @@ La base se llama `presta_u`. En NetBeans, abrir como proyecto Maven la carpeta i
 ## Recorrido de P2
 - `/categorias`: crear, renombrar e inactivar; nombre único y bloqueo si hay equipos activos.
 - `/equipos/{id}` → Solicitar → `/solicitudes/nueva`: equipo, fechas y motivo. Consulta JPQL de intervalos aprobados; permite intervalos contiguos, impide duplicados pendientes y préstamos sin devolver.
-- `/solicitudes` → `/solicitudes/{id}`: solicitudes del usuario demo y detalle. Un ID ajeno devuelve 404.
+- `/solicitudes` → `/solicitudes/{id}`: solicitudes del usuario demo y detalle. Un ID ajeno redirige al listado con un mensaje, sin mostrar ni modificar la solicitud.
 - Detalle pendiente → Cancelar → modal → confirmar: actualiza a CANCELADA, conserva el registro y vuelve a comprobar el estado en la base.
 - `/prestamos`: historial propio, estado calculado a partir de entrega, vencimiento y devolución.
 
@@ -41,7 +41,7 @@ Todas las vistas reutilizan `general/fragmentos :: head`, `header` y `footer` de
 - `domain`: entidades y formulario de solicitud.
 - `resources/templates`: vistas Thymeleaf; `static/css`: estilos de P1.
 - `database`: base inicial y ampliación de P2.
-- `src/test`: pruebas de reglas y navegación HTTP.
+- `src/test`: clase de prueba inicial de P1.
 
 Entidades implementadas: Rol, Usuario, Categoria, Equipo, Mantenimiento, Solicitud y Prestamo. Solicitud tiene relaciones ManyToOne con Usuario y Equipo. Prestamo corresponde a una solicitud entregada. EstadoSolicitud contiene PENDIENTE, APROBADA, RECHAZADA y CANCELADA. Bitácora continúa pendiente.
 
@@ -69,10 +69,14 @@ Entidades implementadas: Rol, Usuario, Categoria, Equipo, Mantenimiento, Solicit
 | 19 | Pendiente: reportes y bitácora |
 | 20 | Parcial P1: ES/EN; cambio de contraseña y traducción de nuevas pantallas pendientes |
 
-## Pruebas
-`mvn test` usa H2 en modo MySQL, aislado de la base local. Las pruebas cubren validaciones, reservas superpuestas y contiguas, duplicados, registros ajenos, cancelación, categorías e historial; además solicitan las páginas por HTTP para comprobar Thymeleaf.
+## Comprobación del avance
+La entrega utiliza el patrón de las clases: Controller, Service, Repository, entidades JPA, consultas derivadas y JPQL, Optional, validaciones, try/catch y redirecciones con mensajes.
 
-GitHub Actions está preparado para ejecutar las mismas pruebas con JDK 21 y MySQL 8.4 temporal, y ejecutar los tres scripts SQL en una base nueva. Su resultado debe consultarse en la pestaña Actions; no equivale a una ejecución en la computadora de cada integrante.
+Se retiraron los extras de P2 que no aparecen en el material: GitHub Actions, pruebas adicionales con H2/JUnit/HttpClient, bloqueo pesimista, actualizaciones con @Modifying y procesamiento con streams. La cancelación consulta la solicitud propia, comprueba que esté pendiente y guarda el nuevo estado con save. Prestamo usa ManyToOne con una columna única, conservando un solo préstamo por solicitud.
+
+Para revisar manualmente: cargar catálogo; crear y renombrar una categoría; intentar inactivar una con equipos activos; crear una solicitud válida y probar fechas incorrectas o superpuestas; abrir el detalle propio; confirmar su cancelación; comprobar los tres estados del historial. El usuario demo debe existir y estar activo.
+
+Este avance no incluye control de cambios simultáneos entre varias peticiones. Login, registro y roles permanecen pendientes. El enum y el manejo de fechas responden a los requisitos expresos de P2.
 
 ## Documentación y ramas
 - [Documento del avance](Avance_1_SC-403.pdf).

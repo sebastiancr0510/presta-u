@@ -3,17 +3,27 @@ package com.prestau.service;
 import com.prestau.domain.*;
 import com.prestau.repository.*;
 import java.time.LocalDateTime;
-import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 @Service
-@RequiredArgsConstructor
 public class SolicitudService {
     private final SolicitudRepository solicitudes;
     private final EquipoRepository equipos;
     private final PrestamoRepository prestamos;
     private final UsuarioActualService usuarioActual;
+
+    public SolicitudService(SolicitudRepository solicitudes, EquipoRepository equipos, PrestamoRepository prestamos, UsuarioActualService usuarioActual) {
+        this.solicitudes = solicitudes;
+        this.equipos = equipos;
+        this.prestamos = prestamos;
+        this.usuarioActual = usuarioActual;
+    }
+
+    @Transactional(readOnly = true)
+    public java.util.List<Equipo> getEquiposSolicitables() {
+        return equipos.findByActivoTrueAndEstadoOperativoOrderByNombreAsc(EquipoService.EN_SERVICIO);
+    }
 
     @Transactional
     public Solicitud crear(SolicitudFormulario formulario) {
@@ -25,10 +35,14 @@ public class SolicitudService {
         if (formulario.getMotivo() == null || formulario.getMotivo().isBlank()
                 || formulario.getMotivo().length() > 300)
             throw new IllegalArgumentException("Indique un motivo de 1 a 300 caracteres.");
-        Equipo equipo = equipos.buscarParaSolicitud(formulario.getEquipoId())
-                .filter(e -> Boolean.TRUE.equals(e.getActivo())
-                        && EquipoService.EN_SERVICIO.equals(e.getEstadoOperativo()))
-                .orElseThrow(() -> new IllegalArgumentException("El equipo no está disponible para solicitar."));
+        var equipoOpt = equipos.findById(formulario.getEquipoId());
+        if (equipoOpt.isEmpty()) {
+            throw new IllegalArgumentException("El equipo no existe.");
+        }
+        Equipo equipo = equipoOpt.get();
+        if (!equipo.getActivo() || !EquipoService.EN_SERVICIO.equals(equipo.getEstadoOperativo())) {
+            throw new IllegalArgumentException("El equipo no está disponible para solicitar.");
+        }
         Usuario usuario = usuarioActual.getActual();
         if (solicitudes.contarSuperpuestas(equipo.getIdEquipo(), EstadoSolicitud.APROBADA,
                 formulario.getInicio(), formulario.getFin()) > 0
@@ -56,17 +70,21 @@ public class SolicitudService {
 
     @Transactional(readOnly = true)
     public Solicitud getPropia(Integer id) {
-        return solicitudes.findByIdSolicitudAndUsuarioIdUsuario(id, usuarioActual.getActual().getIdUsuario())
-                .orElseThrow(() -> new org.springframework.web.server.ResponseStatusException(
-                        org.springframework.http.HttpStatus.NOT_FOUND, "La solicitud no existe."));
+        var solicitudOpt = solicitudes.findByIdSolicitudAndUsuarioIdUsuario(
+                id, usuarioActual.getActual().getIdUsuario());
+        if (solicitudOpt.isEmpty()) {
+            throw new IllegalArgumentException("La solicitud no existe o no pertenece al usuario actual.");
+        }
+        return solicitudOpt.get();
     }
 
     @Transactional
     public void cancelar(Integer id) {
-        getPropia(id);
-        int cambiadas = solicitudes.cambiarEstadoPropio(id, usuarioActual.getActual().getIdUsuario(),
-                EstadoSolicitud.PENDIENTE, EstadoSolicitud.CANCELADA);
-        if (cambiadas != 1)
+        Solicitud solicitud = getPropia(id);
+        if (solicitud.getEstado() != EstadoSolicitud.PENDIENTE) {
             throw new IllegalArgumentException("Solo se puede cancelar una solicitud pendiente.");
+        }
+        solicitud.setEstado(EstadoSolicitud.CANCELADA);
+        solicitudes.save(solicitud);
     }
 }
