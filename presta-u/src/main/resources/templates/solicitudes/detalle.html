@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{general/fragmentos :: head}"></head>
+<body><header th:replace="~{general/fragmentos :: header}"></header>
+<main class="container py-4">
+<div th:if="${mensaje}" class="alert alert-success" th:text="${mensaje}"></div>
+<div th:if="${error}" class="alert alert-danger" th:text="${error}"></div>
+
+<a class="btn btn-outline-light mb-3" th:href="@{/solicitudes}">Volver a mis solicitudes</a>
+<div class="card card-prestau p-4"><h1>Detalle de solicitud <span th:text="${solicitud.idSolicitud}"></span></h1>
+<dl class="row mt-3"><dt class="col-sm-3">Equipo</dt><dd class="col-sm-9" th:text="${solicitud.equipo.codigo + ' — ' + solicitud.equipo.nombre}"></dd>
+<dt class="col-sm-3">Estado</dt><dd class="col-sm-9" th:text="${solicitud.estado}"></dd>
+<dt class="col-sm-3">Retiro</dt><dd class="col-sm-9" th:text="${#temporals.format(solicitud.inicio, 'dd/MM/yyyy HH:mm')}"></dd>
+<dt class="col-sm-3">Devolución</dt><dd class="col-sm-9" th:text="${#temporals.format(solicitud.fin, 'dd/MM/yyyy HH:mm')}"></dd>
+<dt class="col-sm-3">Motivo</dt><dd class="col-sm-9" th:text="${solicitud.motivo}"></dd>
+<dt class="col-sm-3">Observación de revisión</dt><dd class="col-sm-9" th:text="${solicitud.observacion ?: 'Sin observaciones'}"></dd></dl>
+<div th:if="${solicitud.estado.name() == 'PENDIENTE'}">
+<button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#confirmarCancelacion">Cancelar solicitud</button>
+<div class="modal fade" id="confirmarCancelacion" tabindex="-1" aria-labelledby="tituloCancelacion" aria-hidden="true">
+<div class="modal-dialog"><div class="modal-content text-dark">
+<div class="modal-header"><h2 class="modal-title fs-5" id="tituloCancelacion">Confirmar cancelación</h2>
+<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button></div>
+<div class="modal-body">¿Desea cancelar esta solicitud? El registro se conservará en su historial.</div>
+<div class="modal-footer"><button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Volver</button>
+<form th:action="@{/solicitudes/{id}/cancelar(id=${solicitud.idSolicitud})}" method="post">
+<button class="btn btn-danger">Confirmar cancelación</button></form></div></div></div></div></div>
+</div>
+</main><footer th:replace="~{general/fragmentos :: footer}"></footer></body></html>
