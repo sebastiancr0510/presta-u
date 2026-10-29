@@ -1,6 +1,6 @@
 :root {
     --prestau-rojo: #d32f2f;
-    --prestau-rojo-oscuro: #b71c1c;
+    --prestau-rojo-oscuro: #7f1d1d;
     --prestau-fondo: #141414;
     --prestau-tarjeta: #1f1f1f;
     --prestau-borde: #333333;
@@ -74,3 +74,15 @@ body {
     color: var(--prestau-texto);
     border-color: var(--prestau-borde);
 }
+
+.form-control::placeholder {
+    color: #ffffff;
+    opacity: 1;
+}
+
+.form-control:focus {
+    background-color: #1f1f1f;
+    color: #ffffff;
+    border-color: var(--prestau-rojo);
+}
+

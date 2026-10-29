@@ -10,6 +10,24 @@
 <main class="container py-4">
     <h2 class="fw-bold mb-3" th:text="#{equipos.titulo}">Catálogo de equipos</h2>
 
+    <form method="get" th:action="@{/equipos}" class="row g-2 mb-4">
+        <div class="col-md-5">
+            <input type="text" name="texto" class="form-control"
+                   th:placeholder="#{equipos.buscar}" th:value="${texto}"/>
+        </div>
+        <div class="col-md-4">
+            <select name="categoriaId" class="form-select">
+                <option value="" th:text="#{equipos.todas}">Todas las categorías</option>
+                <option th:each="c : ${categorias}" th:value="${c.idCategoria}" th:text="${c.nombre}"
+                        th:selected="${categoriaId != null and categoriaId.equals(c.idCategoria)}"></option>
+            </select>
+        </div>
+        <div class="col-md-3 d-flex gap-2">
+            <button class="btn btn-prestau w-100" type="submit" th:text="#{equipos.filtrar}">Buscar</button>
+            <a class="btn btn-outline-light" th:href="@{/equipos}" th:text="#{equipos.limpiar}">Limpiar</a>
+        </div>
+    </form>
+
     <div th:if="${equipos.isEmpty()}" class="alert alert-info" th:text="#{equipos.vacio}">
         No hay equipos que coincidan con la búsqueda.
     </div>
