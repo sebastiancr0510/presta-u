@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head th:replace="~{general/fragmentos :: head}"/>
+
+<body>
+
+<header th:replace="~{general/fragmentos :: header}"/>
+
+<main class="container py-4">
+    <a class="btn btn-link px-0 mb-2 text-light" th:href="@{/inventario}" th:text="#{inventario.titulo}">Inventario</a>
+    <h2 class="fw-bold mb-3" th:text="#{inventario.estado.titulo}">Estado del equipo</h2>
+
+    <div th:if="${error}" class="alert alert-danger" th:text="${error}"></div>
+
+    <div class="card card-prestau mb-4">
+        <div class="card-body">
+            <p class="mb-2">
+                <strong th:text="${equipo.codigo}">LAP-014</strong> ·
+                <span th:text="${equipo.nombre}">Laptop</span>
+            </p>
+            <p class="mb-0">
+                <span class="texto-suave" th:text="#{equipo.estado}">Estado</span>:
+                <span class="badge"
+                      th:classappend="${equipo.estadoOperativo == 'En servicio'} ? 'badge-servicio' : 'badge-mantenimiento'"
+                      th:text="${equipo.estadoOperativo == 'En servicio'} ? #{estado.servicio} : #{estado.mantenimiento}">
+                    En servicio
+                </span>
+            </p>
+        </div>
+    </div>
+
+    <form th:action="@{/inventario/estado}" method="post" class="row g-3 mb-5">
+        <input type="hidden" name="idEquipo" th:value="${equipo.idEquipo}"/>
+
+        <div class="col-md-4">
+            <label class="form-label" th:text="#{inventario.estado.cambiar}">Cambiar estado</label>
+            <select name="estado" class="form-select">
+                <option value="En servicio" th:text="#{estado.servicio}">En servicio</option>
+                <option value="Mantenimiento" th:text="#{estado.mantenimiento}">Mantenimiento</option>
+            </select>
+        </div>
+
+        <div class="col-md-4">
+            <label class="form-label" th:text="#{inventario.motivo}">Motivo</label>
+            <input type="text" name="motivo" class="form-control" maxlength="150"/>
+        </div>
+
+        <div class="col-md-4">
+            <label class="form-label" th:text="#{inventario.observacion}">Observación</label>
+            <input type="text" name="observacion" class="form-control" maxlength="300"/>
+        </div>
+
+        <div class="col-12">
+            <button type="submit" class="btn btn-prestau" th:text="#{inventario.estado.aplicar}">Aplicar</button>
+        </div>
+    </form>
+
+    <h4 class="fw-bold" th:text="#{inventario.historial}">Historial de mantenimiento</h4>
+
+    <div th:if="${historial.isEmpty()}" class="alert alert-info" th:text="#{inventario.sinHistorial}">
+        Este equipo no tiene registros de mantenimiento.
+    </div>
+
+    <div class="table-responsive" th:unless="${historial.isEmpty()}">
+        <table class="table table-dark table-striped align-middle">
+            <thead>
+                <tr>
+                    <th th:text="#{inventario.motivo}">Motivo</th>
+                    <th th:text="#{inventario.fechaInicio}">Inicio</th>
+                    <th th:text="#{inventario.fechaFin}">Fin</th>
+                    <th th:text="#{inventario.observacion}">Observación</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr th:each="m : ${historial}">
+                    <td th:text="${m.motivo}">Cable dañado</td>
+                    <td th:text="${#temporals.format(m.fechaInicio, 'dd/MM/yyyy HH:mm')}">01/01/2026 10:00</td>
+                    <td th:text="${m.fechaFin == null} ? #{inventario.enCurso} : ${#temporals.format(m.fechaFin, 'dd/MM/yyyy HH:mm')}">
+                        En curso
+                    </td>
+                    <td th:text="${m.observacion}"></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</main>
+
+<footer th:replace="~{general/fragmentos :: footer}"/>
+
+</body>
+</html>

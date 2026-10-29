@@ -12,6 +12,9 @@ public interface EquipoRepository extends JpaRepository<Equipo, Integer> {
     boolean existsByCodigo(String codigo);
 
     List<Equipo> findByActivoTrueOrderByNombreAsc();
+    
+    @Query("SELECT e FROM Equipo e ORDER BY e.activo DESC, e.codigo ASC")
+    List<Equipo> findTodosOrdenados();
 
     @Query("SELECT e FROM Equipo e WHERE e.activo = true AND (LOWER(e.nombre) LIKE LOWER(CONCAT('%', :texto, '%')) OR LOWER(e.codigo) LIKE LOWER(CONCAT('%', :texto, '%'))) ORDER BY e.nombre ASC")
     List<Equipo> consultaJPQL(@Param("texto") String texto);

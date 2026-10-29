@@ -26,7 +26,7 @@ public class EquipoService {
 
     @Transactional(readOnly = true)
     public List<Equipo> getTodos() {
-        return equipoRepository.findAll();
+        return equipoRepository.findTodosOrdenados();
     }
 
     @Transactional(readOnly = true)
@@ -80,6 +80,9 @@ public class EquipoService {
             existente.setNombre(equipo.getNombre());
             existente.setDescripcion(equipo.getDescripcion());
             existente.setRutaImagen(equipo.getRutaImagen());
+            if (!existente.getActivo()) {
+                throw new IllegalArgumentException("El equipo está inactivo. Actívelo antes de editarlo.");
+            }
         }
     }
 
@@ -88,6 +91,13 @@ public class EquipoService {
         Equipo equipo = equipoRepository.findById(idEquipo)
                 .orElseThrow(() -> new IllegalArgumentException("El equipo no existe."));
         equipo.setActivo(false);
+    }
+    
+    @Transactional
+    public void activar(Integer idEquipo) {
+        Equipo equipo = equipoRepository.findById(idEquipo)
+                .orElseThrow(() -> new IllegalArgumentException("El equipo no existe."));
+        equipo.setActivo(true);
     }
 
     @Transactional
@@ -121,6 +131,10 @@ public class EquipoService {
 
         } else {
             throw new IllegalArgumentException("El estado indicado no es valido.");
+        }
+
+        if (!equipo.getActivo()) {
+            throw new IllegalArgumentException("El equipo está inactivo. Actívelo antes de cambiar su estado.");
         }
     }
 }

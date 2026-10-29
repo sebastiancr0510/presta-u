@@ -10,53 +10,117 @@
           th:href="@{/fav/favicon.ico}">
     <link rel="stylesheet" th:href="@{/webjars/bootstrap/5.3.8/css/bootstrap.min.css}">
     <link rel="stylesheet" th:href="@{/css/estilos.css}">
-        
 </head>
+
+<div th:fragment="confirmarInactivar" class="modal fade"
+     id="modalInactivar" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+
+            <!-- Encabezado rojo -->
+            <div class="modal-header bg-prestau text-white">
+                <h5 class="modal-title"
+                    th:text="#{inventario.confirmarTitulo}">
+                    Confirma inactivación
+                </h5>
+                <button type="button" class="btn-close btn-close-white"
+                        data-bs-dismiss="modal" aria-label="Cerrar"></button>
+            </div>
+
+            <div class="modal-body text-dark">
+                <p class="mb-2">
+                    <span th:text="#{inventario.confirmarTexto}">
+                        ¿Realmente desea inactivar
+                    </span>
+                    <strong id="nombreInactivar"></strong>?
+                </p>
+                <p class="fw-bold mb-0"
+                   th:text="#{inventario.confirmarAviso}">
+                    El equipo dejará de aparecer en el catálogo.
+                </p>
+            </div>
+
+            <div class="modal-footer">
+                <form th:action="@{/inventario/inactivar}"
+                      method="post" class="d-inline">
+                    <input type="hidden" name="idEquipo" id="idInactivar"/>
+                    <button type="submit" class="btn btn-danger"
+                            th:text="#{inventario.confirmarBoton}">
+                        Inactivar
+                    </button>
+                </form>
+
+                <button type="button" class="btn btn-secondary"
+                        data-bs-dismiss="modal"
+                        th:text="#{inventario.cerrar}">
+                    Cerrar
+                </button>
+            </div>
+
+        </div>
+    </div>
+</div>
 
 <body>
 
 <header th:fragment="header" class="bg-prestau text-white">
     <nav class="navbar navbar-expand-xl navbar-dark">
         <div class="container">
-            <a class="navbar-brand fw-bold" th:href="@{/inicio}">Presta U</a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#menuPrincipal">
+            <a class="navbar-brand fw-bold"
+               th:href="@{/inicio}">Presta U</a>
+
+            <button class="navbar-toggler" type="button"
+                    data-bs-toggle="collapse"
+                    data-bs-target="#menuPrincipal">
                 <span class="navbar-toggler-icon"></span>
             </button>
+
             <div class="collapse navbar-collapse" id="menuPrincipal">
                 <ul class="navbar-nav me-auto">
                     <li class="nav-item">
-                        <a class="nav-link" th:href="@{/inicio}" th:text="#{menu.inicio}">Inicio</a>
+                        <a class="nav-link" th:href="@{/inicio}"
+                           th:text="#{menu.inicio}">Inicio</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" th:href="@{/equipos}" th:text="#{menu.equipos}">Equipos</a>
+                        <a class="nav-link" th:href="@{/equipos}"
+                           th:text="#{menu.equipos}">Equipos</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" th:href="@{/solicitudes}" th:text="#{menu.solicitudes}">Mis solicitudes</a>
+                        <a class="nav-link" th:href="@{/solicitudes}"
+                           th:text="#{menu.solicitudes}">Mis solicitudes</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" th:href="@{/prestamos}" th:text="#{menu.prestamos}">Préstamos</a>
+                        <a class="nav-link" th:href="@{/prestamos}"
+                           th:text="#{menu.prestamos}">Préstamos</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" th:href="@{/categorias}" th:text="#{menu.categorias}">Categorías</a>
+                        <a class="nav-link" th:href="@{/categorias}"
+                           th:text="#{menu.categorias}">Categorías</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" th:href="@{/inventario}" th:text="#{menu.inventario}">Inventario</a>
+                        <a class="nav-link" th:href="@{/inventario}"
+                           th:text="#{menu.inventario}">Inventario</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" th:href="@{/perfil}" th:text="#{menu.perfil}">Mi perfil</a>
+                        <a class="nav-link" th:href="@{/perfil}"
+                           th:text="#{menu.perfil}">Mi perfil</a>
                     </li>
                 </ul>
+
                 <div class="d-flex align-items-center gap-2">
-                    <a class="nav-link fw-bold p-0" th:href="@{/inicio(lang='es')}">ES</a>
+                    <a class="nav-link fw-bold p-0"
+                       th:href="@{/inicio(lang='es')}">ES</a>
                     <span>|</span>
-                    <a class="nav-link p-0" th:href="@{/inicio(lang='en')}">EN</a>
+                    <a class="nav-link p-0"
+                       th:href="@{/inicio(lang='en')}">EN</a>
                 </div>
             </div>
         </div>
     </nav>
 </header>
 
-<footer th:fragment="footer" class="bg-dark text-white text-center py-3 mt-5">
+<footer th:fragment="footer"
+        class="bg-dark text-white text-center py-3 mt-5">
     <small th:text="#{app.pie}">Presta U</small>
     <script th:src="@{/webjars/bootstrap/5.3.8/js/bootstrap.bundle.min.js}"></script>
 </footer>
