@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head th:replace="~{general/fragmentos :: head}"/>
+
+<body>
+
+<header th:replace="~{general/fragmentos :: header}"/>
+
+<main class="container py-4">
+    <h2 class="fw-bold mb-3" th:text="#{equipos.titulo}">Catálogo de equipos</h2>
+
+    <div th:if="${equipos.isEmpty()}" class="alert alert-info" th:text="#{equipos.vacio}">
+        No hay equipos que coincidan con la búsqueda.
+    </div>
+
+    <div class="row row-cols-1 row-cols-md-3 g-4">
+        <div class="col" th:each="e : ${equipos}">
+            <div class="card card-prestau h-100">
+                <div class="card-body">
+                    <div th:if="${e.rutaImagen == null}" class="imagen-placeholder mb-3"
+                         th:text="#{form.sinImagen}">Sin imagen</div>
+                    <img th:unless="${e.rutaImagen == null}" th:src="${e.rutaImagen}"
+                         class="imagen-equipo mb-3" th:alt="${e.nombre}"/>
+
+                    <p class="texto-suave small mb-1"
+                       th:text="${e.categoria.nombre} + ' · ' + ${e.codigo}">Computación · LAP-014</p>
+                    <h5 class="fw-bold" th:text="${e.nombre}">Laptop</h5>
+                    <span class="badge"
+                          th:classappend="${e.estadoOperativo == 'En servicio'} ? 'badge-servicio' : 'badge-mantenimiento'"
+                          th:text="${e.estadoOperativo == 'En servicio'} ? #{estado.servicio} : #{estado.mantenimiento}">
+                        En servicio
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+
+<footer th:replace="~{general/fragmentos :: footer}"/>
+
+</body>
+</html>

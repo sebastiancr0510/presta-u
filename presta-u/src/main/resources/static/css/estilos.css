@@ -59,11 +59,13 @@ body {
 .badge-servicio {
     background-color: #d1f0dc;
     color: #1e6b3a;
+    border-radius: 0;
 }
 
 .badge-mantenimiento {
     background-color: #fde6b8;
     color: #7a4b00;
+    border-radius:0;
 }
 
 .form-control,
