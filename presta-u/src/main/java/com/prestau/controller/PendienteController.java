@@ -17,11 +17,6 @@ public class PendienteController {
         return pendiente(model, "menu.prestamos");
     }
 
-    @GetMapping("/categorias")
-    public String categorias(Model model) {
-        return pendiente(model, "menu.categorias");
-    }
-
     @GetMapping("/perfil")
     public String perfil(Model model) {
         return pendiente(model, "menu.perfil");

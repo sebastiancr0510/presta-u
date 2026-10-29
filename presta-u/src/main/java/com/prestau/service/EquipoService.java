@@ -97,6 +97,8 @@ public class EquipoService {
     public void activar(Integer idEquipo) {
         Equipo equipo = equipoRepository.findById(idEquipo)
                 .orElseThrow(() -> new IllegalArgumentException("El equipo no existe."));
+        if (!Boolean.TRUE.equals(equipo.getCategoria().getActiva()))
+            throw new IllegalArgumentException("La categoría del equipo está inactiva.");
         equipo.setActivo(true);
     }
 

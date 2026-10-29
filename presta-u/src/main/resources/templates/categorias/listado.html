@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{general/fragmentos :: head}"></head>
+<body><header th:replace="~{general/fragmentos :: header}"></header>
+<main class="container py-4">
+<div th:if="${mensaje}" class="alert alert-success" th:text="${mensaje}"></div>
+<div th:if="${error}" class="alert alert-danger" th:text="${error}"></div>
+
+<h1>Categorías</h1>
+<div class="card card-prestau p-3 mb-4">
+<h2 class="h5">Nueva categoría</h2>
+<form th:action="@{/categorias/guardar}" method="post" class="d-flex gap-2">
+<label for="nuevoNombre" class="visually-hidden">Nombre</label>
+<input id="nuevoNombre" name="nombre" class="form-control" placeholder="Nombre de la categoría" required maxlength="50">
+<button class="btn btn-prestau">Crear</button></form></div>
+<div class="table-responsive"><table class="table table-dark align-middle">
+<thead><tr><th>Nombre</th><th>Equipos</th><th>Estado</th><th>Acciones</th></tr></thead>
+<tbody><tr th:each="c : ${categorias}">
+<td><form th:action="@{/categorias/guardar}" method="post" class="d-flex gap-2">
+<input type="hidden" name="idCategoria" th:value="${c.idCategoria}">
+<input aria-label="Nombre de categoría" class="form-control" name="nombre" th:value="${c.nombre}" maxlength="50" required>
+<button class="btn btn-outline-light">Guardar</button></form></td>
+<td th:text="${cantidades[c.idCategoria]}"></td><td th:text="${c.activa ? 'Activa' : 'Inactiva'}"></td>
+<td><form th:if="${c.activa}" th:action="@{/categorias/inactivar}" method="post">
+<input type="hidden" name="idCategoria" th:value="${c.idCategoria}"><button class="btn btn-outline-danger">Inactivar</button></form></td>
+</tr><tr th:if="${#lists.isEmpty(categorias)}"><td colspan="4">No hay categorías registradas.</td></tr></tbody></table></div>
+</main><footer th:replace="~{general/fragmentos :: footer}"></footer></body></html>
