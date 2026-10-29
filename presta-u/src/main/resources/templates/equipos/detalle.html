@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head th:replace="~{general/fragmentos :: head}"/>
+
+<body>
+
+<header th:replace="~{general/fragmentos :: header}"/>
+
+<main class="container py-4">
+    <a class="btn btn-link px-0 mb-2 text-light" th:href="@{/equipos}" th:text="#{equipo.volver}">Volver</a>
+
+    <div class="card card-prestau">
+        <div class="card-header bg-transparent">
+            <h3 class="m-0" th:text="${equipo.nombre}">Equipo</h3>
+        </div>
+        <div class="card-body">
+            <div th:if="${equipo.rutaImagen == null}" class="imagen-placeholder mb-3"
+                 th:text="#{form.sinImagen}">Sin imagen</div>
+            <img th:unless="${equipo.rutaImagen == null}" th:src="${equipo.rutaImagen}"
+                 class="imagen-equipo mb-3" th:alt="${equipo.nombre}"/>
+
+            <dl class="row mb-0">
+                <dt class="col-sm-3" th:text="#{equipo.codigo}">Código</dt>
+                <dd class="col-sm-9" th:text="${equipo.codigo}">LAP-014</dd>
+
+                <dt class="col-sm-3" th:text="#{equipo.categoria}">Categoría</dt>
+                <dd class="col-sm-9" th:text="${equipo.categoria.nombre}">Computación</dd>
+
+                <dt class="col-sm-3" th:text="#{equipo.descripcion}">Descripción</dt>
+                <dd class="col-sm-9" th:text="${equipo.descripcion}">Descripción</dd>
+
+                <dt class="col-sm-3" th:text="#{equipo.estado}">Estado</dt>
+                <dd class="col-sm-9"
+                    th:text="${equipo.estadoOperativo == 'En servicio'} ? #{estado.servicio} : #{estado.mantenimiento}">
+                    En servicio
+                </dd>
+            </dl>
+        </div>
+        <div class="card-footer bg-transparent border-0">
+            <a th:if="${equipo.activo and equipo.estadoOperativo == 'En servicio'}"
+               class="btn btn-prestau" th:text="#{equipo.solicitar}">Solicitar</a>
+
+            <div th:unless="${equipo.activo and equipo.estadoOperativo == 'En servicio'}"
+                 class="alert alert-warning mb-0">
+                <span th:if="${!equipo.activo}" th:text="#{equipo.noSolicitable.inactivo}">Inactivo</span>
+                <span th:if="${equipo.activo and equipo.estadoOperativo != 'En servicio'}"
+                      th:text="#{equipo.noSolicitable.mantenimiento}">En mantenimiento</span>
+            </div>
+        </div>
+    </div>
+</main>
+
+<footer th:replace="~{general/fragmentos :: footer}"/>
+
+</body>
+</html>
