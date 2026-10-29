@@ -39,7 +39,7 @@
         </div>
         <div class="card-footer bg-transparent border-0">
             <a th:if="${equipo.activo and equipo.estadoOperativo == 'En servicio'}"
-               class="btn btn-prestau" th:text="#{equipo.solicitar}">Solicitar</a>
+               class="btn btn-prestau" th:href="@{/solicitudes/nueva(equipoId=${equipo.idEquipo})}" th:text="#{equipo.solicitar}">Solicitar</a>
 
             <div th:unless="${equipo.activo and equipo.estadoOperativo == 'En servicio'}"
                  class="alert alert-warning mb-0">
