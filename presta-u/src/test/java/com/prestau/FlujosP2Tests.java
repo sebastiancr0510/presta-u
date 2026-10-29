@@ -122,7 +122,7 @@ class FlujosP2Tests {
                 +"&fin="+URLEncoder.encode(f.getFin().toString(),StandardCharsets.UTF_8)+"&motivo=Trabajo";
         var respuesta=post("/solicitudes/nueva",body);
         assertEquals(302,respuesta.statusCode());
-        String detalle=respuesta.headers().firstValue("location").orElseThrow();
+        String detalle=URI.create(respuesta.headers().firstValue("location").orElseThrow()).getPath().split(";")[0];
         var pagina=get(detalle);
         assertEquals(200,pagina.statusCode()); assertTrue(pagina.body().contains("confirmarCancelacion"));
         assertEquals(302,post(detalle+"/cancelar","").statusCode());

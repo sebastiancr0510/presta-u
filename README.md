@@ -88,4 +88,3 @@ GitHub Actions está preparado para ejecutar las mismas pruebas con JDK 21 y MyS
 - [Guía de pantallas y revisión](PROTOTIPO.md): correspondencia con historias y aspectos por comprobar.
 
 El diseño incluye pantallas del solicitante y del encargado. El PDF es una evidencia visual estática; la navegación interactiva se consulta en Figma y queda pendiente de verificación. Los mapas de navegación y datos están en el documento del avance.
-
