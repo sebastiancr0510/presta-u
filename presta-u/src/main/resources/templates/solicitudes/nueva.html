@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{general/fragmentos :: head}"></head>
+<body><header th:replace="~{general/fragmentos :: header}"></header>
+<main class="container py-4">
+<div th:if="${mensaje}" class="alert alert-success" th:text="${mensaje}"></div>
+<div th:if="${error}" class="alert alert-danger" th:text="${error}"></div>
+
+<h1>Nueva solicitud</h1>
+<form class="card card-prestau p-4" th:action="@{/solicitudes/nueva}" th:object="${formulario}" method="post">
+<div th:if="${#fields.hasAnyErrors()}" class="alert alert-danger"><p th:each="e : ${#fields.allErrors()}" th:text="${e}"></p></div>
+<label for="equipoId" class="form-label">Equipo</label>
+<select id="equipoId" class="form-select mb-3" th:field="*{equipoId}" required>
+<option value="">Seleccione un equipo</option><option th:each="e : ${equipos}" th:value="${e.idEquipo}" th:text="${e.codigo + ' — ' + e.nombre}"></option></select>
+<div class="row"><div class="col-md-6"><label for="inicio" class="form-label">Fecha y hora de retiro</label>
+<input id="inicio" class="form-control mb-3" type="datetime-local" th:field="*{inicio}" required></div>
+<div class="col-md-6"><label for="fin" class="form-label">Fecha y hora de devolución</label>
+<input id="fin" class="form-control mb-3" type="datetime-local" th:field="*{fin}" required></div></div>
+<label for="motivo" class="form-label">Motivo del préstamo</label>
+<textarea id="motivo" class="form-control mb-3" th:field="*{motivo}" rows="4" maxlength="300" required></textarea>
+<p class="texto-suave">Las fechas se interpretan en la hora local del servidor. La solicitud queda pendiente de revisión.</p>
+<div><button class="btn btn-prestau">Enviar solicitud</button> <a class="btn btn-outline-light" th:href="@{/equipos}">Volver al catálogo</a></div>
+</form>
+</main><footer th:replace="~{general/fragmentos :: footer}"></footer></body></html>
