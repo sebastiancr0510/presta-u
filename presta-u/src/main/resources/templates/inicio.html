@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head th:replace="~{general/fragmentos :: head}"/>
+
+<body>
+
+<header th:replace="~{general/fragmentos :: header}"/>
+
+<main class="container py-4">
+    <h2 class="fw-bold" th:text="#{inicio.titulo}">Inicio</h2>
+    <p class="texto-suave" th:text="#{inicio.texto}">Consulta los equipos disponibles.</p>
+    <a class="btn btn-prestau" th:href="@{/equipos}" th:text="#{inicio.consultar}">Consultar equipos</a>
+</main>
+
+<footer th:replace="~{general/fragmentos :: footer}"/>
+
+</body>
+</html>

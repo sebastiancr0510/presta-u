@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{general/fragmentos :: head}"></head>
+<body><header th:replace="~{general/fragmentos :: header}"></header>
+<main class="container py-4">
+<div th:if="${mensaje}" class="alert alert-success" th:text="${mensaje}"></div>
+<div th:if="${error}" class="alert alert-danger" th:text="${error}"></div>
+
+<div class="d-flex justify-content-between mb-4"><h1>Mis solicitudes</h1><a class="btn btn-prestau align-self-center" th:href="@{/solicitudes/nueva}">Nueva solicitud</a></div>
+<div class="table-responsive"><table class="table table-dark align-middle">
+<thead><tr><th>Número</th><th>Equipo</th><th>Retiro</th><th>Devolución</th><th>Estado</th><th>Detalle</th></tr></thead>
+<tbody><tr th:each="s : ${solicitudes}"><td th:text="${s.idSolicitud}"></td><td th:text="${s.equipo.nombre}"></td>
+<td th:text="${#temporals.format(s.inicio, 'dd/MM/yyyy HH:mm')}"></td><td th:text="${#temporals.format(s.fin, 'dd/MM/yyyy HH:mm')}"></td>
+<td th:text="${s.estado}"></td><td><a class="btn btn-outline-light" th:href="@{/solicitudes/{id}(id=${s.idSolicitud})}">Ver detalle</a></td></tr>
+<tr th:if="${#lists.isEmpty(solicitudes)}"><td colspan="6">Todavía no tiene solicitudes.</td></tr></tbody></table></div>
+</main><footer th:replace="~{general/fragmentos :: footer}"></footer></body></html>

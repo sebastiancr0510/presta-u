@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head th:replace="~{general/fragmentos :: head}"/>
+
+<body>
+
+<header th:replace="~{general/fragmentos :: header}"/>
+
+<main class="container py-4">
+    <h2 class="fw-bold mb-3"
+        th:text="${equipo.idEquipo == null} ? #{form.nuevo} : #{form.editar}">Equipo</h2>
+
+    <div th:if="${error}" class="alert alert-danger" th:text="${error}"></div>
+
+    <form th:action="@{/inventario/guardar}" th:object="${equipo}" method="post" class="row g-3">
+        <input type="hidden" th:field="*{idEquipo}"/>
+
+        <div class="col-md-4">
+            <label class="form-label" th:text="#{form.codigo}">Código</label>
+            <input type="text" class="form-control" th:field="*{codigo}" maxlength="20"
+                   th:readonly="${equipo.idEquipo != null}" required/>
+            <div class="text-danger" th:if="${#fields.hasErrors('codigo')}" th:errors="*{codigo}"></div>
+        </div>
+
+        <div class="col-md-8">
+            <label class="form-label" th:text="#{form.nombre}">Nombre</label>
+            <input type="text" class="form-control" th:field="*{nombre}" maxlength="80" required/>
+            <div class="text-danger" th:if="${#fields.hasErrors('nombre')}" th:errors="*{nombre}"></div>
+        </div>
+
+        <div class="col-md-6">
+            <label class="form-label" th:text="#{form.categoria}">Categoría</label>
+            <select class="form-select" th:field="*{categoria.idCategoria}" required>
+                <option value="" th:text="#{form.seleccione}">Seleccione...</option>
+                <option th:each="c : ${categorias}" th:value="${c.idCategoria}" th:text="${c.nombre}"></option>
+            </select>
+        </div>
+
+        <div class="col-12">
+            <label class="form-label" th:text="#{form.descripcion}">Descripción</label>
+            <textarea class="form-control" th:field="*{descripcion}" rows="3" maxlength="300"></textarea>
+        </div>
+
+        <div class="col-12">
+            <label class="form-label">URL de imagen</label>
+            <input type="url" class="form-control" th:field="*{rutaImagen}" maxlength="1024"
+                   placeholder="https://..."/>
+        </div>
+
+        <div class="col-12">
+            <button type="submit" class="btn btn-prestau" th:text="#{form.guardar}">Guardar</button>
+            <a class="btn btn-outline-light" th:href="@{/inventario}" th:text="#{form.cancelar}">Cancelar</a>
+        </div>
+    </form>
+</main>
+
+<footer th:replace="~{general/fragmentos :: footer}"/>
+
+</body>
+</html>

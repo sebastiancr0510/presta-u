@@ -1,0 +1,4 @@
+# Copiar como application-local.properties dentro de presta-u (no se sube a Git).
+spring.datasource.username=SU_USUARIO_MYSQL
+spring.datasource.password=SU_CLAVE_MYSQL
+prestau.usuario-demo-id=1

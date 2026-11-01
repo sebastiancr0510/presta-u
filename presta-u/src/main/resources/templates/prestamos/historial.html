@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{general/fragmentos :: head}"></head>
+<body><header th:replace="~{general/fragmentos :: header}"></header>
+<main class="container py-4">
+<div th:if="${mensaje}" class="alert alert-success" th:text="${mensaje}"></div>
+<div th:if="${error}" class="alert alert-danger" th:text="${error}"></div>
+
+<h1 class="mb-4">Historial de préstamos</h1>
+<div class="table-responsive"><table class="table table-dark align-middle">
+<thead><tr><th>Equipo</th><th>Entrega</th><th>Fecha límite</th><th>Devolución real</th><th>Estado</th><th>Solicitud</th></tr></thead>
+<tbody><tr th:each="p : ${prestamos}"><td th:text="${p.solicitud.equipo.nombre}"></td>
+<td th:text="${#temporals.format(p.entrega, 'dd/MM/yyyy HH:mm')}"></td>
+<td th:text="${#temporals.format(p.vencimiento, 'dd/MM/yyyy HH:mm')}"></td>
+<td th:text="${p.devolucion == null ? 'Sin devolver' : #temporals.format(p.devolucion, 'dd/MM/yyyy HH:mm')}"></td>
+<td><span class="badge" th:classappend="${p.estado == 'Atrasado' ? 'bg-danger' : (p.estado == 'Devuelto' ? 'bg-secondary' : 'bg-success')}" th:text="${p.estado}"></span></td>
+<td><a class="btn btn-outline-light" th:href="@{/solicitudes/{id}(id=${p.solicitud.idSolicitud})}">Ver solicitud</a></td></tr>
+<tr th:if="${#lists.isEmpty(prestamos)}"><td colspan="6">Todavía no tiene préstamos registrados.</td></tr></tbody></table></div>
+</main><footer th:replace="~{general/fragmentos :: footer}"></footer></body></html>
