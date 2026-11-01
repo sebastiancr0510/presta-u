@@ -8,7 +8,7 @@ Sistema web para gestionar préstamos de equipos universitarios. Centraliza el c
 - Profesor: Allam Mauricio Fernández Rivera.
 
 ## Avance de implementación
-P1 implementó inicio, catálogo, búsqueda, detalle, inventario, mantenimiento y cambio de idioma. P2 incorpora categorías, creación y consulta de solicitudes, cancelación e historial de préstamos.
+Se implementó inicio, catálogo, búsqueda, detalle, inventario, mantenimiento y cambio de idioma. P2 incorpora categorías, creación y consulta de solicitudes, cancelación e historial de préstamos.
 
 **Pendiente: login, registro y permisos por roles.** Inventario y categorías están abiertos. Se usa el usuario activo definido por `prestau.usuario-demo-id` (por defecto 1), resuelto en el servidor. No se recibe un identificador de usuario desde el formulario. Esto permite demostrar el filtrado de registros, pero todos los visitantes comparten ese usuario hasta incorporar autenticación; no es aislamiento real entre sesiones.
 
@@ -25,14 +25,14 @@ Requisitos: JDK 21, Maven 3.9 o superior y MySQL 8.0/8.4. El proyecto Maven est�
 
 La base se llama `presta_u`. En NetBeans, abrir como proyecto Maven la carpeta interna `presta-u`, seleccionar JDK 21 y establecer esa carpeta como directorio de ejecución para cargar el archivo local. Usar la zona horaria local de Costa Rica para las fechas de demostración.
 
-## Recorrido de P2
+## Parte del avance 
 - `/categorias`: crear, renombrar e inactivar; nombre único y bloqueo si hay equipos activos.
 - `/equipos/{id}` → Solicitar → `/solicitudes/nueva`: equipo, fechas y motivo. Consulta JPQL de intervalos aprobados; permite intervalos contiguos, impide duplicados pendientes y préstamos sin devolver.
 - `/solicitudes` → `/solicitudes/{id}`: solicitudes del usuario demo y detalle. Un ID ajeno redirige al listado con un mensaje, sin mostrar ni modificar la solicitud.
 - Detalle pendiente → Cancelar → modal → confirmar: actualiza a CANCELADA, conserva el registro y vuelve a comprobar el estado en la base.
 - `/prestamos`: historial propio, estado calculado a partir de entrega, vencimiento y devolución.
 
-Todas las vistas reutilizan `general/fragmentos :: head`, `header` y `footer` de P1.
+Todas las vistas reutilizan `general/fragmentos :: head`, `header` y `footer` 
 
 ## Paquetes y datos
 - `controller`: rutas y formularios MVC.
@@ -40,8 +40,8 @@ Todas las vistas reutilizan `general/fragmentos :: head`, `header` y `footer` de
 - `repository`: acceso JPA y consultas JPQL.
 - `domain`: entidades y formulario de solicitud.
 - `resources/templates`: vistas Thymeleaf; `static/css`: estilos de P1.
-- `database`: base inicial y ampliación de P2.
-- `src/test`: clase de prueba inicial de P1.
+- `database`: base inicial y ampliación.
+- `src/test`: clase de prueba inicial.
 
 Entidades implementadas: Rol, Usuario, Categoria, Equipo, Mantenimiento, Solicitud y Prestamo. Solicitud tiene relaciones ManyToOne con Usuario y Equipo. Prestamo corresponde a una solicitud entregada. EstadoSolicitud contiene PENDIENTE, APROBADA, RECHAZADA y CANCELADA. Bitácora continúa pendiente.
 
@@ -67,12 +67,10 @@ Entidades implementadas: Rol, Usuario, Categoria, Equipo, Mantenimiento, Solicit
 | 17 | Pendiente: consulta global del encargado |
 | 18 | Pendiente: usuarios y roles |
 | 19 | Pendiente: reportes y bitácora |
-| 20 | Parcial P1: ES/EN; cambio de contraseña y traducción de nuevas pantallas pendientes |
+| 20 | Parcial : ES/EN; cambio de contraseña y traducción de nuevas pantallas pendientes |
 
 ## Comprobación del avance
 La entrega utiliza el patrón de las clases: Controller, Service, Repository, entidades JPA, consultas derivadas y JPQL, Optional, validaciones, try/catch y redirecciones con mensajes.
-
-Se retiraron los extras de P2 que no aparecen en el material: GitHub Actions, pruebas adicionales con H2/JUnit/HttpClient, bloqueo pesimista, actualizaciones con @Modifying y procesamiento con streams. La cancelación consulta la solicitud propia, comprueba que esté pendiente y guarda el nuevo estado con save. Prestamo usa ManyToOne con una columna única, conservando un solo préstamo por solicitud.
 
 Para revisar manualmente: cargar catálogo; crear y renombrar una categoría; intentar inactivar una con equipos activos; crear una solicitud válida y probar fechas incorrectas o superpuestas; abrir el detalle propio; confirmar su cancelación; comprobar los tres estados del historial. El usuario demo debe existir y estar activo.
 
